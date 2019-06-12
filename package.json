@@ -1,0 +1,19 @@
+{
+  "name": "grind-jsx",
+  "version": "1.0.0",
+  "description": "A lightweight drop in JSX renderer optimized for React encapsulation",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack -p"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.4.5",
+    "webpack": "^4.33.0"
+  },
+  "devDependencies": {
+    "webpack-cli": "^3.3.4"
+  }
+}
