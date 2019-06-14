@@ -1,3 +1,4 @@
+'use strict';
 
 export default (name, props = {}, ...children) => {
     const e = document.createElement(name);
