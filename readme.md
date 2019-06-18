@@ -21,7 +21,7 @@ export default TestComponent;
 ### Render In React Component
 
 ```
-import { renderIn } from 'grind';
+import { renderIn } from 'grind-jsx';
 
 useEffect(() => {
     renderIn(ref.current, TestComponent, props);
