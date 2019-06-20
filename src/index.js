@@ -38,7 +38,7 @@ export const renderSwap = (domNode, a, b) => {
     }
 
     domNode.insertBefore(na, nb);
-    nodes.splice
+    nodes.splice.
 };
 
 // MARK: Utils
