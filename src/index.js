@@ -1,4 +1,4 @@
-// 'use strict';
+'use strict';
 
 const nodePrefix = 'node-';
 const nodes = nodeFactory();
