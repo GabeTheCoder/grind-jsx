@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 
 const nodePrefix = 'node-';
 const nodes = nodeFactory();
@@ -43,7 +43,15 @@ export const renderSwap = (domNode, x, y) => {
 
 // MARK: Utils
 
-const nodeFactory = () => [<div id={nodePrefix + 'eof'} />];
+const nodeFactory = () => {
+    const nodes = [];
+
+    const eofNode = document.createElement('div');
+    eofNode.setAttribute('id', nodePrefix + 'eof');
+    nodes.push(eofNode);
+
+    return nodes;
+};
 
 const element = (key, e) => {
     const value = props[key];
