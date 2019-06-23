@@ -1,6 +1,6 @@
 # Grind JSX
 
-Grind JSX is a thing. Gonna put info here soon and make a readme that doesn't suck.
+Grind JSX is a thing. Gonna put info here soon and make a readme that doesn't suck. Also to be fair, this is WIP AF at this point. 
 
 ## Usage
 
