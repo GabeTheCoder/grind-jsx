@@ -1,12 +1,9 @@
 'use strict';
 
-const nodePrefix = 'node-';
-const nodes = nodeFactory();
-
 export default (name, props = {}, ...children) => {
     const e = document.createElement(name);
 
-    Object.keys(props).forEach(key => element(key, e));
+    Object.keys(props).forEach(key => element(props, key, e));
     children.forEach(child => e.appendChild(child));
 
     return e;
@@ -41,8 +38,6 @@ export const renderSwap = (domNode, x, y) => {
     swapDOM(domNode, x, y);
 };
 
-// MARK: Utils
-
 const nodeFactory = () => {
     const nodes = [];
 
@@ -53,13 +48,23 @@ const nodeFactory = () => {
     return nodes;
 };
 
-const element = (key, e) => {
-    const value = props[key];
+const fragmentFactory = () => {
+    const fragment = document.createDocumentFragment();
+    // async to worker thread
+    // this might actually give us best results on modern browsers.
+};
 
+const nodePrefix = 'node-';
+const nodes = nodeFactory();
+
+// MARK: Utils
+
+const element = (props, key, e) => {
+    const value = props[key];
     const event = onEvent(key);
-    const name = eventName(event);
 
     if (event) {
+        const name = eventName(event);
         e.addEventListener(name, value);
     } else {
         e.setAttribute(key, value);
