@@ -25,16 +25,11 @@ export const renderOut = (domNode, index) => {
 };
 
 export const clearAll = domNode => {
-    const clearNode = () => {
-        if (nodes.length === 0) return;
-        
-        domNode.removeChild(nodes[0]);
-        nodes.shift();
+    nodes
+        .filter(node => node.id !== 'node-eof')
+        .forEach(node => domNode.removeChild(node));
 
-        clearNode();
-    };
-
-    clearNode();
+    nodes = nodeFactory();
 };
 
 export const renderSwap = (domNode, x, y) => {
@@ -61,12 +56,11 @@ const nodeFactory = () => {
 
 const fragmentFactory = () => {
     const fragment = document.createDocumentFragment();
-    // async to worker thread
     // this might actually give us best results on modern browsers.
 };
 
 const nodePrefix = 'node-';
-const nodes = nodeFactory();
+let nodes = nodeFactory();
 
 // MARK: DOM Functions
 
