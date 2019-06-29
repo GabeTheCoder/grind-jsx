@@ -4,26 +4,37 @@ export default (name, props = {}, ...children) => {
     const e = document.createElement(name);
 
     Object.keys(props).forEach(key => element(props, key, e));
-    children.forEach(child => e.appendChild(child));
+    children.forEach(child => append(e, child));
 
     return e;
 };
 
 export const renderIn = (domNode, component, props = {}, options = {}) => {
     const node = component(props);
+    nodes.push(append(domNode, node));
 
-    domNode.appendChild(node);
-    nodes.push(node);
-
-    const id = nodePrefix + renderedNodes.length - 1;
+    const id = nodePrefix + nodes.length - 1;
     const size = options.measure ? measure(node) : 0;
 
     return { id, size };
 };
 
 export const renderOut = (domNode, index) => {
-    domNode.removeChild(renderedNodes[index]);
+    domNode.removeChild(nodes[index]);
     nodes.splice(index, 1);
+};
+
+export const clearAll = domNode => {
+    const clearNode = () => {
+        if (nodes.length === 0) return;
+        
+        domNode.removeChild(nodes[0]);
+        nodes.shift();
+
+        clearNode();
+    };
+
+    clearNode();
 };
 
 export const renderSwap = (domNode, x, y) => {
@@ -57,19 +68,33 @@ const fragmentFactory = () => {
 const nodePrefix = 'node-';
 const nodes = nodeFactory();
 
-// MARK: Utils
+// MARK: DOM Functions
 
 const element = (props, key, e) => {
     const value = props[key];
     const event = onEvent(key);
 
     if (event) {
-        const name = eventName(event);
-        e.addEventListener(name, value);
+        e.addEventListener(eventName(event), value);
     } else {
         e.setAttribute(key, value);
     }
 };
+
+const append = (parent, child) => {
+    if (!child) return;
+
+    if (child instanceof HTMLElement || child instanceof SVGElement) {
+        parent.appendChild(child);
+    } else {
+        const text = document.createTextNode(child);
+        parent.appendChild(text);
+    }
+
+    return child;
+};
+
+// MARK: Utils
 
 const last = arr => arr[arr.length - 1];
 const inIndex = (arr, is) => is.every(i => i < arr.length);
@@ -88,10 +113,7 @@ const swapDOM = (domNode, x, y) => {
     domNode.insertBefore(nodes[sy], nodes[sx + 1]);
 };
 
-const measure = component => {
-    // TODO: measure each component, however unrelated it may be
-    return 0;
-};
+const measure = component => component.offsetHeight;
 
 const onEvent = key => key.match(/^on([A-Z]\w+)$/);
 const eventName = event => event[1].toLowerCase();
