@@ -11,9 +11,15 @@ export default (name, props = {}, ...children) => {
 
 export const renderIn = (domNode, component, props = {}, options = {}) => {
     const node = component(props);
-    nodes.push(append(domNode, node));
+    const nodeId = domNode.id;
 
-    const id = nodePrefix + nodes.length - 1;
+    if (!nodes[nodeId]) {
+        nodes[nodeId] = nodeFactory();
+    }
+
+    nodes[nodeId].push(append(domNode, node));
+
+    const id = nodePrefix + nodes[nodeId].length - 1;
     const size = options.measure ? measure(node) : 0;
 
     return { id, size };
@@ -25,15 +31,17 @@ export const renderOut = (domNode, index) => {
 };
 
 export const clearAll = domNode => {
-    nodes
+    if (!nodes[domNode.id]) return;
+
+    nodes[domNode.id]
         .filter(node => node.id !== 'node-eof')
         .forEach(node => domNode.removeChild(node));
 
-    nodes = nodeFactory();
+    nodes[domNode.id] = nodeFactory();
 };
 
 export const renderSwap = (domNode, x, y) => {
-    // TODO: move this to a test and be less strict here
+    // TODO: move this to a test and be less strict here, also support the hashmap nodes.
     const validNodes = nodes.length === 0 || last(nodes).id !== nodePrefix + 'eof';
 
     if (x === y || !nx || !ny || !validNodes) {
@@ -56,11 +64,15 @@ const nodeFactory = () => {
 
 const fragmentFactory = () => {
     const fragment = document.createDocumentFragment();
-    // this might actually give us best results on modern browsers.
+
+    // this might actually give us best results on modern browsers. we can buffer all elements 
+    // into this in a background thread possibly and then just append one element of say 10 items
+    // within this fragment to the DOM.
 };
 
 const nodePrefix = 'node-';
 let nodes = nodeFactory();
+const nodes = {};
 
 // MARK: DOM Functions
 
