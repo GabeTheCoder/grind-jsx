@@ -71,7 +71,6 @@ const fragmentFactory = () => {
 };
 
 const nodePrefix = 'node-';
-let nodes = nodeFactory();
 const nodes = {};
 
 // MARK: DOM Functions
