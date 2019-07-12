@@ -35,7 +35,13 @@ export const clearAll = domNode => {
 
     nodes[domNode.id]
         .filter(node => node.id !== 'node-eof')
-        .forEach(node => domNode.removeChild(node));
+        .forEach(node => {
+            try {
+                domNode.removeChild(node)
+            } catch (e) {
+                // DOM object not found
+            }
+        });
 
     nodes[domNode.id] = nodeFactory();
 };
