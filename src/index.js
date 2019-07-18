@@ -1,9 +1,10 @@
 'use strict';
 
-export default (name, props = {}, ...children) => {
+export default (name, props, ...children) => {
     const e = document.createElement(name);
+    const objProps = props || {};
 
-    Object.keys(props).forEach(key => element(props, key, e));
+    Object.keys(objProps).forEach(key => element(objProps, key, e));
     children.forEach(child => append(e, child));
 
     return e;
@@ -37,9 +38,9 @@ export const clearAll = domNode => {
         .filter(node => node.id !== 'node-eof')
         .forEach(node => {
             try {
-                domNode.removeChild(node)
+                domNode.removeChild(node);
             } catch (e) {
-                // DOM object not found
+                // DOM issue
             }
         });
 
@@ -97,6 +98,8 @@ const append = (parent, child) => {
 
     if (child instanceof HTMLElement || child instanceof SVGElement) {
         parent.appendChild(child);
+    } else if (child instanceof Array) {
+        child.forEach(nextChild => append(parent, nextChild));
     } else {
         const text = document.createTextNode(child);
         parent.appendChild(text);
