@@ -82,6 +82,10 @@ const nodes = {};
 
 // MARK: DOM Functions
 
+const domDefines = {
+    className: 'class'  
+};
+
 const element = (props, key, e) => {
     const value = props[key];
     const event = onEvent(key);
@@ -89,7 +93,8 @@ const element = (props, key, e) => {
     if (event) {
         e.addEventListener(eventName(event), value);
     } else {
-        e.setAttribute(key, value);
+        const domKey = domDefines[key] || key;
+        e.setAttribute(domKey, value);
     }
 };
 
